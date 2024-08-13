@@ -1,5 +1,10 @@
 package ga_complex_planning;
 
+//import ga_complex_planning.planning_info.Info;
+import util.PropertyUtil;
+
+import java.util.*;
+
 
 /**
  * @ClassName ComplexPlanningApplication
@@ -10,10 +15,12 @@ package ga_complex_planning;
  **/
 
 public class ComplexPlanningApplication {
+
     public static void main(String[] args) {
         //Map<String, Point> info = Info.getInfo();
-        GeneticAlgorithm ga = new GeneticAlgorithm();
-        ga.conductGA();
 
-    }
+            GeneticAlgorithm ga = new GeneticAlgorithm();
+            ga.conductGA();
+  }
+
 }

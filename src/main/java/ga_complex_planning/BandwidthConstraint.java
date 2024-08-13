@@ -21,7 +21,7 @@ public class BandwidthConstraint {
     }
 
     // 计算带宽限制函数
-    public double calculateBandwidthPenalty(double[] bandwidths) {
+    public double calculateBandwidthPenalty(int[] bandwidths) {
         double bandwidthPenalty = 0.0;
         for (double bandwidth : bandwidths) {
             // 计算每个平台的带宽惩罚项

@@ -4,12 +4,11 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * @ClassName YamlUtil
  * @Description TODO
- * @Author faro_z
- * @Date 2022/3/5 1:46 下午
+ * @Author fwt
+ * @Date 2024/2/5 1:46 下午
  * @Version 1.0
  **/
 public class YamlUtil {

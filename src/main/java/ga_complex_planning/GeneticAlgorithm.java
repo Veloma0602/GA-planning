@@ -1,7 +1,7 @@
 package ga_complex_planning;
 
-import ga_complex_planning.planning_info.Info;
-import ga_complex_planning.pojo.Point;
+//import ga_complex_planning.planning_info.Info;
+//import ga_complex_planning.pojo.Point;
 import util.GAGraphUtil;
 import util.PropertyUtil;
 import java.util.*;
@@ -23,27 +23,33 @@ public class GeneticAlgorithm   {
     private Map<Double,Double> bestScoreDataMap = new HashMap<>();
     private Map<Double,Double> worstScoreDataMap = new HashMap<>();
     private Map<Double,Double> totalScoreDataMap = new HashMap<>();
+    private Map<Double,Double> IterBestScoreDataMap = new HashMap<>();
+    private Map<Integer,Chromosome> IterBestGeneMap = new HashMap<>();
+
+
 
     public static int underZeroCount = 0;
 
     private static final Random r = new Random();
 
-
-    // 受灾地信息
-    private Map<String, Point> info = Info.getInfo();
+//
+//    // 受灾地信息
+//    private Map<String, Point> info = Info.getInfo();
 
     double wInterference = Double.valueOf(gaComplexPro.getProperty("wInterference"));
     double wBandwidth = Double.valueOf(gaComplexPro.getProperty("wBandwidth")); //权重还没设置
     
     double ORIGIN_SCORE = Double.valueOf(gaComplexPro.getProperty("ORIGIN_SCORE"));
     // 种群
-    private List<Chromosome> pop = new ArrayList<>();
+    public List<Chromosome> pop = new ArrayList<>();
     // 种群大小
     private int POP_SIZE = Integer.valueOf(gaComplexPro.getProperty("POP_SIZE"));
     // 迭代次数
     private int ITER_NUM = Integer.valueOf(gaComplexPro.getProperty("ITER_NUM"));
     // 迭代次数计数
+    private int TOTAL_ITER_NUM = Integer.valueOf(gaComplexPro.getProperty("TOTAL_ITER_NUM"));
     private int iterCount = 0;
+    private int TotalIterNum = 0;
 
     private int numOfPlatforms = Integer.valueOf(planningInfoPro.getProperty("numOfPlatforms"));
 
@@ -55,6 +61,10 @@ public class GeneticAlgorithm   {
     private double b_range_max = Double.valueOf(planningInfoPro.getProperty("b_range_max"));
     private double b_max = Double.valueOf(planningInfoPro.getProperty("b_max"));
     private double fixedTotalPowerValue = Double.valueOf(planningInfoPro.getProperty("fixedTotalPowerValue"));    //总功率
+
+    //记录外部循环的平均最优适应度变化
+    private double[][] IterationBestValues = new double[ITER_NUM][TOTAL_ITER_NUM];
+    private Map<Integer, Double> IterationAverageValuesMap = new HashMap<>();
 
 
     // 当前种群最佳适应度
@@ -73,7 +83,7 @@ public class GeneticAlgorithm   {
     // 变异概率
     private double MUTATION_RATE = Double.valueOf(gaComplexPro.getProperty("MUTATION_RATE"));
     // 最大变异长度
-    private int MAX_MUTATION_NUM = 2;
+    private int MAX_MUTATION_NUM = 3;
 
 
     /**
@@ -81,34 +91,98 @@ public class GeneticAlgorithm   {
      * @return 执行结束后最佳的种群基因
      */
     public Chromosome conductGA() {
-        long startTime = System.currentTimeMillis();
-        init();
-        for (int i = 0; i < ITER_NUM; i++) {
-            // 1、计算种群适应度
-            calculatePopScore();
-            print(i+1);
-            // 2、交叉生成新的种群
-            evolve();
-             // 3、种群变异
-             mutation();
-        }
-        long endTime = System.currentTimeMillis();
-        System.out.println("==============================");
-        System.out.println("出现负值结果个数为："+GeneticAlgorithm.underZeroCount);
-        System.out.println("平均每次迭代出现负值的个数为:"+GeneticAlgorithm.underZeroCount/500);
-        System.out.println("运算耗时为："+(endTime-startTime)+"ms");
-        Map[] bestWorstDataSet = new Map[2];
-        Map[] totalDataSet = new Map[1];
-        bestWorstDataSet[0]=bestScoreDataMap;
-        bestWorstDataSet[1]=worstScoreDataMap;
-        totalDataSet[0]=totalScoreDataMap;
-        GAGraphUtil.drawBestWorstScoreGraph(bestWorstDataSet);
-        GAGraphUtil.drawTotalScoreGraph(totalDataSet);
-        GAGraphUtil.blockUtil();
-        return bestGene;
-    }
+        double IterationBestScoreSum = 0;
+        long IterTimeSum = 0;
+        for(int i = 0; i < TOTAL_ITER_NUM;i++){
+            long startTime = System.currentTimeMillis();
+            TotalIterNum++;
+            init();
+            for (int j = 0; j < ITER_NUM; j++) {
+                // 1、计算种群适应度
+                calculatePopScore();
+                print(j+1);
+                // 2、交叉生成新的种群
+                evolve();
+                 // 3、种群变异
+                 mutation();
+            }
+            long endTime = System.currentTimeMillis();
+            System.out.println("==============================");
+            System.out.println("出现负值结果个数为："+GeneticAlgorithm.underZeroCount);
+            System.out.println("平均每次迭代出现负值的个数为:"+GeneticAlgorithm.underZeroCount/500);
+            System.out.println("运算耗时为："+(endTime-startTime)+"ms");
+            long IterTime = endTime-startTime;
+            IterTimeSum += IterTime ;
+            Map[] bestWorstDataSet = new Map[2];
+            Map[] totalDataSet = new Map[1];
+            bestWorstDataSet[0]=bestScoreDataMap;
+            bestWorstDataSet[1]=worstScoreDataMap;
+            totalDataSet[0]=totalScoreDataMap;
+            GAGraphUtil.drawBestWorstScoreGraph(bestWorstDataSet);
+            GAGraphUtil.drawTotalScoreGraph(totalDataSet);
+//            return bestGene;
+//            GAGraphUtil.drawCurrentPopScoreDistributeGraph(pop, iterCount);
 
-    /**
+        }
+
+        // 初始化最大的 bestScore 为 Double.MIN_VALUE
+        double maxBestScore = Double.MIN_VALUE;
+        double maxBestScoreKey = Double.MIN_VALUE;
+        // 遍历Map
+        Iterator<Map.Entry<Double, Double>> iterator = IterBestScoreDataMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Double, Double> entry = iterator.next();
+            double CurrentScore = entry.getValue();
+            double CurrentKey = entry.getKey();
+            // 如果当前的bestScore比之前的最大值大，则更新最大值
+            if (CurrentScore > maxBestScore) {
+                maxBestScoreKey = CurrentKey;
+                maxBestScore = CurrentScore;
+            }
+        }
+
+        //
+        Chromosome maxBestGene = IterBestGeneMap.get((int)maxBestScoreKey);
+
+
+        long IterAverTime = IterTimeSum / TOTAL_ITER_NUM;
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("这次运行平均运算耗时为" + IterAverTime + "ms");
+        System.out.println("算法得到最佳基因的适应度为" + maxBestScore );
+        System.out.println("算法得到最佳基因的频率分布为：" + Arrays.toString(maxBestGene.getFrequencies()));
+        System.out.println("算法得到最佳基因的带宽分布为：" + Arrays.toString(maxBestGene.getBandwidths()));
+
+
+        Map[] IterBestScoreDataSet = new Map[1];
+        Map[] IterationAverageValuesSet = new Map[1];
+        IterBestScoreDataSet[0] = IterBestScoreDataMap;
+
+
+
+        //计算每次GA迭代算法平均适应度变化
+        for(int n = 0; n < IterationBestValues.length; n++){
+            IterationBestScoreSum = 0;
+            for (int m = 0; m < IterationBestValues[n].length; m++) {
+                IterationBestScoreSum +=  0.000001 * IterationBestValues[n][m];
+//                System.out.println( "IterationBestScoreSum " + IterationBestScoreSum);
+            }
+            double average =  1000000 * (IterationBestScoreSum / IterationBestValues[n].length);
+//            System.out.println("average" + average);
+            IterationAverageValuesMap.put(n,average);
+        }
+
+        IterationAverageValuesSet[0] = IterationAverageValuesMap;
+
+        GAGraphUtil.drawIterAverBestScoreGraph(IterationAverageValuesSet);
+
+                //绘制总体GA迭代适应度变化轨迹图
+        GAGraphUtil.drawIterBestScoreGraph(IterBestScoreDataSet);
+        GAGraphUtil.blockUtil();
+
+        return bestGene;
+
+}
+/**
      * 临时打印相关信息
      */
     private void print(int generation) {
@@ -117,7 +191,7 @@ public class GeneticAlgorithm   {
         System.out.println("当前种群最佳适应度："+bestScore);
         System.out.println("当前种群最坏适应度："+worstScore);
         System.out.println("当前种群总适应度："+totalScore);
-        System.out.println("当前种群平均适应度："+averageScore);
+        System.out.println("当前种群平均适应度："+ averageScore);
         System.out.println("当前种群最佳基因的频率分布："+Arrays.toString(bestGene.getFrequencies()));
         System.out.println("当前种群最佳基因的带宽分布："+Arrays.toString(bestGene.getBandwidths()));
         System.out.println("当前种群最差基因的频率分布："+Arrays.toString(worstGene.getFrequencies()));
@@ -129,6 +203,10 @@ public class GeneticAlgorithm   {
      * 初始化种群
      */
     private void init() {
+        pop.clear();
+        bestScoreDataMap.clear();
+        worstScoreDataMap.clear();
+        totalScoreDataMap.clear();
         for (int i = 0; i < POP_SIZE ;i++) {
             Chromosome chromosome = new Chromosome(numOfPlatforms,f_min,f_max, 
             f_disable_min,f_disable_max,
@@ -165,9 +243,25 @@ public class GeneticAlgorithm   {
             averageScore = averageScore > bestScore ? bestScore : averageScore;
         }
         // 将待绘制的折线图数据信息存入 map 中
-        bestScoreDataMap.put((double) iterCount, bestScore);
-        worstScoreDataMap.put((double) iterCount, worstScore);
+        bestScoreDataMap.put((double) iterCount,bestScore);
+        worstScoreDataMap.put((double) iterCount,worstScore);
         totalScoreDataMap.put((double) iterCount, totalScore);
+
+        System.out.println("iterCount:" + iterCount);
+        System.out.println("TotalIterNum:" + TotalIterNum);
+
+        System.out.println(bestScore);
+
+        //记录每次算法循环，种群最佳适应度在迭代过程中的平均值
+        IterationBestValues[(iterCount- 1) % ITER_NUM  ][TotalIterNum - 1] = bestScore;
+
+        //每完成一次外部循环，做一个此次算法内种群分布情况记录
+        if(iterCount % ITER_NUM == 0) {
+            IterBestScoreDataMap.put((double) TotalIterNum, bestScore);
+            IterBestGeneMap.put(TotalIterNum,bestGene);
+//            GAGraphUtil.drawCurrentPopScoreDistributeGraph(pop, iterCount);
+        }
+
     }
 
     // private void calculatePopScore() {
@@ -221,10 +315,13 @@ public class GeneticAlgorithm   {
                 double interferences = Icalculator.calculateInterferenceLevel(chromosome.getFrequencies(), chromosome.getBandwidths());
                 double bandwidthPenalty = Bcalculator.calculateBandwidthPenalty(chromosome.getBandwidths());
 
+//         System.out.println(1.0 / interferences);
+//         System.out.println(bandwidthPenalty);
+
 
                 
                 // 计算适应度函数 F = w_interference * F_interference + w_bandwidth * F_bandwidth
-                scoreCount = (wInterference * interferences) + (wBandwidth * bandwidthPenalty);
+                scoreCount = 1.0 / (wInterference * interferences) + 20 * (wBandwidth * bandwidthPenalty);
     
         // 统计出现负值分数的个数
         if (scoreCount < 0) {
@@ -301,11 +398,29 @@ public class GeneticAlgorithm   {
      * 保证基因组突变后还符合约束
      */
     private void mutation() {
+        List<Chromosome> mutatedPop = new ArrayList<>();
+
         for (Chromosome chromosome : pop) {
             if (Math.random()<MUTATION_RATE) {
-                chromosome.mutation(MAX_MUTATION_NUM,chromosome);
+                Chromosome mutatedChromosome = chromosome.mutation(MAX_MUTATION_NUM,chromosome);
+                mutatedPop.add(mutatedChromosome);
+            }else {
+                mutatedPop.add(chromosome);
             }
         }
+
+        // 保证新生成的子代长度与原父代长度相等
+        while (mutatedPop.size()>POP_SIZE) {
+            mutatedPop.remove(r.nextInt(mutatedPop.size()));
+        }
+        pop.clear();
+        pop=mutatedPop;
+
+
+
+
+
+
     }
 }
 

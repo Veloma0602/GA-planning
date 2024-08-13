@@ -14,7 +14,7 @@ import util.PropertyUtil;
 
 public class InterferenceCalculator {
     private double fixedTotalPowerValue; // 用于存储总功率的固定值
-    private double[] frequencies; // 用于存储每个移动平台的频率
+    private int[] frequencies; // 用于存储每个移动平台的频率
 
     private double total_i = 0.0;
 
@@ -49,7 +49,7 @@ public class InterferenceCalculator {
     }
 
     // 计算干扰水平函数
-    public double calculateInterferenceLevel(double frequencies[],double bandwidths[]) {
+    public double calculateInterferenceLevel(int frequencies[],int bandwidths[]) {
         for (int i = 0; i < frequencies.length; i++) {
             // 计算每个移动平台的噪声项
             double noise = calculateNoise(frequencies[i],bandwidths[i]);

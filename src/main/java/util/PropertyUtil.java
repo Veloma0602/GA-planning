@@ -7,8 +7,8 @@ import java.util.Properties;
 /**
  * @ClassName propertyUtil
  * @Description TODO
- * @Author faro_z
- * @Date 2022/3/3 12:45 下午
+ * @Author fwt
+ * @Date 2024/2/3 12:45 下午
  * @Version 1.0
  **/
 public class PropertyUtil {

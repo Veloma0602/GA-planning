@@ -33,7 +33,7 @@ public class ConstraintChecker {
         return true;
     }
 
-    private static boolean checkFrequencyRangeConstraint(double[] frequencies, double fMin, double fMax) {
+    private static boolean checkFrequencyRangeConstraint(int[] frequencies, double fMin, double fMax) {
         for (double frequency : frequencies) {
             if (frequency < fMin || frequency > fMax) {
 
@@ -43,7 +43,7 @@ public class ConstraintChecker {
         return true;
     }
 
-    private static boolean checkFrequencyPointRangeConstraint(double[] frequencies, double fRangeMin, double fRangeMax) {
+    private static boolean checkFrequencyPointRangeConstraint(int[] frequencies, double fRangeMin, double fRangeMax) {
         for (double frequency : frequencies) {
             if (frequency >= fRangeMin && frequency <= fRangeMax) {
 
@@ -53,7 +53,7 @@ public class ConstraintChecker {
         return true; // 所有频率都不在范围内，返回 true，表示满足约束
     }
 
-    private static boolean checkBandwidthLimitConstraint(double[] bandwidths, double bMax) {
+    private static boolean checkBandwidthLimitConstraint(int[] bandwidths, double bMax) {
         i++;
         double totalBandwidth = 0.0;
         for (double bandwidth : bandwidths) {

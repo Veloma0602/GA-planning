@@ -5,22 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e527dc6b-d2d6-4777-baff-6795db71ba2f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dfs_complex_planning/DfsComplexPlanning.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dfs_complex_planning/Solution.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/BandwidthConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/BandwidthConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/Chromosome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/Chromosome.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/Codec.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ComplexPlanningApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ComplexPlanningApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ConstraintChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ConstraintChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/GeneticAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/GeneticAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/RouteCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/RouteCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_simple_planning/Chromosome.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_simple_planning/Codec.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_simple_planning/GeneticAlgorithm.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_simple_planning/MaxFuncAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_simple_planning/SimplePlanningApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/InterferenceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/InterferenceCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/RouteCalculator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/planning_info/Info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/pojo/Point.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/DrawingTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/DrawingTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/GAGraphUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/GAGraphUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/PropertyUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/PropertyUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/YamlUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/YamlUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/YamlUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/YamlUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ga_complex.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ga_complex.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ga_simple.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/planning_info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/planning_info.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/point_list.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ga_complex_planning/ChromosomeTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ga_complex_planning/GeneticAlgorithmTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ga_simple_planning/ChromosomeTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/util/DrawingToolsTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/util/RandomDataTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/util/YamlUtilTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/BandwidthConstraint.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/BandwidthConstraint.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/Chromosome.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/Chromosome.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/ComplexPlanningApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/ComplexPlanningApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/ConstraintChecker.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/ConstraintChecker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/GeneticAlgorithm.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/GeneticAlgorithm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/InterferenceCalculator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/InterferenceCalculator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/planning_info/Info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/pojo/Point.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ga_simple.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/planning_info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/planning_info.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/DrawingTools.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/DrawingTools.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/GAGraphUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/GAGraphUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/PropertyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/PropertyUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/YamlUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/YamlUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/YamlUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/YamlUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,18 +77,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/722/code/ga-PathPlanning&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/722/code/GA",
+    "settings.editor.selected.configurable": "File.Encoding"
   }
-}</component>
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn install" />
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="ComplexPlanningApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ga_complex_planning.ComplexPlanningApplication" />
-      <module name="ga-PathPlanning" />
+      <module name="GA" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ga_complex_planning.*" />

@@ -1,8 +1,8 @@
 package ga_complex_planning;
 
 
-import ga_complex_planning.planning_info.Info;
-import ga_complex_planning.pojo.Point;
+//import ga_complex_planning.planning_info.Info;
+//import ga_complex_planning.pojo.Point;
 import util.GAGraphUtil;
 import util.PropertyUtil;
 import java.util.*;
@@ -19,8 +19,8 @@ public class Chromosome {
     private int[] gene;
     private int geneSize;
     private double score;
-    private double[] frequencies; // 移动平台的频率数组
-    private double[] bandwidths;  // 移动平台的带宽数组
+    private int[] frequencies; // 移动平台的频率数组
+    private int[] bandwidths;  // 移动平台的带宽数组
     // 将参数定义为类的成员变量
     private int numOfPlatforms;
 
@@ -60,43 +60,35 @@ public class Chromosome {
         this.b_range_min = b_range_min;
         this.b_range_max = b_range_max;
         this.b_max = b_max;
-        frequencies = new double[numOfPlatforms];
-        bandwidths = new double[numOfPlatforms];
+        frequencies = new int[numOfPlatforms];
+        bandwidths = new int[numOfPlatforms];
         init();
 
     }
 
 
     /**
-     * 初始化个体基因，需要保证
-     * 1、基因中起始点0个数 为 carNum +1
-     * 2、每个点只能出现一次，且所有点都必须出现
-     * 3、两个起始点不可以相邻
-     * 4、基因收尾必须是起始点位置 0
-     *
-     * 假设 carNum = 2  pointNum =4
-     * 正确的基因:
-     * 0 2 3 0 1 4 0
-     *
-     * 错误的基因：
-     * 0 3 3 0 1 4 0  (3受灾点重复)
-     * 0 0 3 2 1 4 0  (有两个起始点重合->有车子没出发)
+     * 初始化个体基因
+     * 需要保证其满足约束条件
      */
         
         public void init() {
-            Random random = new Random();
             double totalBandwidth = 0.0;
     
             for (int i = 0; i < frequencies.length; i++) {
-                frequencies[i] = f_min + random.nextDouble() * (f_max - f_min);
+                Random random = new Random();
+
+                frequencies[i] = (int) (f_min + random.nextDouble() * (f_max - f_min));
     
                 // 确保频率不在禁用频段内
                 while (frequencies[i] >= f_disable_min && frequencies[i] <= f_disable_max) {
-                    frequencies[i] = f_min + random.nextDouble() * (f_max - f_min);
+                    frequencies[i] = (int) (f_min + random.nextDouble() * (f_max - f_min));
                 }
     
-                bandwidths[i] = b_range_min + random.nextDouble() * (b_range_max - b_range_min);
+                bandwidths[i] = (int) (b_range_min + random.nextDouble() * (b_range_max - b_range_min));
                 totalBandwidth += bandwidths[i];
+
+//                System.out.println("random此次的随机值为" + random);
 
             }
     
@@ -115,25 +107,14 @@ public class Chromosome {
     
 
 
-    /**
-     * 判断当前染色体是否符合要求
-     * 1、基因中起始点0个数 为 carNum +1
-     * 2、每个点只能出现一次，且所有点都必须出现
-     * 3、两个起始点不可以相邻
-     * 4、基因收尾必须是起始点位置 0
-     * 这个函数主要是用在交叉后对子代进行判断的
-     * 这里还要注意一点，如果生成的子代不满足条件
-     * 我们不应该重新轮盘赌选择父代，而是重新选择交叉片段的位移
-     * @param chromosome
-     * @return
-     */
+
   
 
     /**
      * 交叉生成两个新的子代
      * 这里确保两个子代都是符合染色体规范的
-     * @param p1
-     * @param p2
+     * @param parent1
+     * @param parent2
      * @return
      */
 
@@ -158,10 +139,10 @@ public class Chromosome {
         Chromosome child2 = new Chromosome(numOfPlatforms, f_min, f_max, f_disable_min, f_disable_max,
                                             b_range_min, b_range_max, b_max);
 
-        double[] parent1Frequencies = parent1.getFrequencies();
-        double[] parent2Frequencies = parent2.getFrequencies();
-        double[] parent1Bandwidths = parent1.getBandwidths();
-        double[] parent2Bandwidths = parent2.getBandwidths();
+         int[] parent1Frequencies = parent1.getFrequencies();
+         int[] parent2Frequencies = parent2.getFrequencies();
+         int[] parent1Bandwidths = parent1.getBandwidths();
+         int[] parent2Bandwidths = parent2.getBandwidths();
 
         // 交叉频率信息
         for (int i = 0; i < crossoverPoint; i++) {
@@ -198,7 +179,7 @@ public class Chromosome {
      * @param maxMutationNum
      */
     // TODO:
-    public void mutation(int maxMutationNum,Chromosome chromosome) {
+    public Chromosome mutation(int maxMutationNum,Chromosome chromosome) {
         // 如果要变异，变异对的个数起码也得是1对
         int mutationPairNum = Math.max((int) Math.random() * maxMutationNum / 2,1);
         // 变异策略有两种
@@ -221,10 +202,12 @@ public class Chromosome {
                 }
             }
             // 交换目标基因
-            double Btmp = chromosome.bandwidths[left];
+            int Btmp = chromosome.bandwidths[left];
             chromosome.bandwidths[left] = chromosome.bandwidths[right];
             chromosome.bandwidths[right] = Btmp;
+
         }
+        return chromosome;
     }
 
     /**
@@ -362,19 +345,19 @@ public class Chromosome {
         this.fixedTotalPowerValue = fixedTotalPowerValue;
     }
     
-    public double[] getFrequencies() {
+    public int[] getFrequencies() {
         return frequencies;
     }
     
-    public void setFrequencies(double[] frequencies) {
+    public void setFrequencies(int[] frequencies) {
         this.frequencies = frequencies;
     }
     
-    public double[] getBandwidths() {
+    public int[] getBandwidths() {
         return bandwidths;
     }
     
-    public void setBandwidths(double[] bandwidths) {
+    public void setBandwidths(int[] bandwidths) {
         this.bandwidths = bandwidths;
     }
 
@@ -387,10 +370,10 @@ public class Chromosome {
         this.lambda = lambda;
     }
 
-    public void setFrequency(int index, double frequency) {
+    public void setFrequency(int index, int frequency) {
         frequencies[index] = frequency;
     }
-    public void setBandwidth(int index, double bandwidth) {
+    public void setBandwidth(int index, int bandwidth) {
         bandwidths[index] = bandwidth;
     }
 

@@ -19,13 +19,13 @@ import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
 import java.util.Map;
-
 /**
  * 后端绘图类
  *
- * @author FARO_Z
- * @date 2022-3-9
+ * @author fwt
+ * @date 2024-2-9
  */
+
 public class DrawingTools extends ApplicationFrame {
     private String titleFont;
     private int titleFontSize;

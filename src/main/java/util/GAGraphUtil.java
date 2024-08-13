@@ -33,6 +33,25 @@ public class GAGraphUtil {
     }
 
     /**
+     * 绘制每次迭代最优 适应度变化折线图
+     * @param dataSet 绘制图标使用的数据集
+     */
+    public static void drawIterBestScoreGraph(Map[] dataSet) {
+        String[] types = {"最佳适应度"};
+        DrawingTools.drawLineChart("最佳适应度变化","GA迭代最佳适应度变化","GA迭代次数","适应度得分",dataSet,types);
+    }
+
+    /**
+     * 绘制完成算法迭代后平均最优 适应度变化折线图
+     * @param dataSet 绘制图标使用的数据集
+     */
+    public static void drawIterAverBestScoreGraph(Map[] dataSet) {
+        String[] types = {"最佳适应度"};
+        DrawingTools.drawLineChart("大迭代平均最佳适应度变化","迭代最佳适应度变化","GA迭代次数","适应度得分",dataSet,types);
+    }
+
+
+    /**
      * 绘制当前种群适应度函数分布
      * @param pop
      */
@@ -40,18 +59,20 @@ public class GAGraphUtil {
         List<Double> list = new ArrayList<>();
         for (Chromosome chrom : pop) {
             list.add(chrom.getScore());
+            System.out.println(chrom.getScore());
+
         }
         Map<Double, Double> map = new HashMap<>();
         Double randomData = list.get(0);
-        System.out.println("randomData:"+randomData);
+//        System.out.println("randomData:"+randomData);
         int mod = 1;
-        while (randomData>=10) {
-            mod*=10;
-            randomData/=10;
+        while (randomData>=1000000) {
+            mod*=1000000;
+            randomData/=1000000;
         }
         for (Double elem : list) {
             int key = (int) (elem / mod);
-            System.out.println("key:"+key);
+//            System.out.println("key:"+key);
             Double origin = map.get(key);
             if (origin==null) origin=0d;
             origin++;
@@ -61,7 +82,7 @@ public class GAGraphUtil {
         System.out.println("mod:"+mod);
         Map[] dataSet = new Map[]{map};
         String[] types = {"种群适应度分数分布"};
-        DrawingTools.drawLineChart("当前代数："+iterNum,"种群适应度分数分布"+iterNum,"分数范围","出现次数",dataSet,types);
+        DrawingTools.drawLineChart("当前代数："+iterNum,"第" + iterNum + "代种群适应度分数分布","分数范围","出现次数",dataSet,types);
     }
 
     /**
