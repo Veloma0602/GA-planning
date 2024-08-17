@@ -15,17 +15,19 @@ import java.util.*;
  * @Date 2024/1/25 4:35 下午
  * @Version 1.0
  **/
-public class GeneticAlgorithm   {
+public class GeneticAlgorithm {
 
     private Properties gaComplexPro = PropertyUtil.getProperty("ga_complex");
     private Properties planningInfoPro = PropertyUtil.getProperty("planning_info");
 
-    private Map<Double,Double> bestScoreDataMap = new HashMap<>();
-    private Map<Double,Double> worstScoreDataMap = new HashMap<>();
-    private Map<Double,Double> totalScoreDataMap = new HashMap<>();
-    private Map<Double,Double> IterBestScoreDataMap = new HashMap<>();
-    private Map<Integer,Chromosome> IterBestGeneMap = new HashMap<>();
+    private Map<Double, Double> bestScoreDataMap = new HashMap<>();
+    private Map<Double, Double> worstScoreDataMap = new HashMap<>();
+    private Map<Double, Double> totalScoreDataMap = new HashMap<>();
+    private Map<Double, Double> IterBestScoreDataMap = new HashMap<>();
+    private Map<Integer, Chromosome> IterBestGeneMap = new HashMap<>();
 
+    private double F_interference_max; // 新增：干扰的最大值
+    private double F_bandwidth_max; // 新增：带宽的最大值
 
 
     public static int underZeroCount = 0;
@@ -38,7 +40,8 @@ public class GeneticAlgorithm   {
 
     double wInterference = Double.valueOf(gaComplexPro.getProperty("wInterference"));
     double wBandwidth = Double.valueOf(gaComplexPro.getProperty("wBandwidth")); //权重还没设置
-    
+    double wChannel = Double.valueOf(gaComplexPro.getProperty("wChannel"));
+
     double ORIGIN_SCORE = Double.valueOf(gaComplexPro.getProperty("ORIGIN_SCORE"));
     // 种群
     public List<Chromosome> pop = new ArrayList<>();
@@ -85,6 +88,9 @@ public class GeneticAlgorithm   {
     // 最大变异长度
     private int MAX_MUTATION_NUM = 3;
 
+    private CombinedPenaltyCalculator combinedPenaltyCalculator = new CombinedPenaltyCalculator();
+    private double P_min = Double.MAX_VALUE;
+    private double P_max = Double.MIN_VALUE;
 
     /**
      * 执行遗传算法函数
@@ -182,7 +188,104 @@ public class GeneticAlgorithm   {
         return bestGene;
 
 }
-/**
+
+    /**
+     * 执行遗传算法函数（收敛代数)
+     *
+     * @return 执行结束后最佳的种群基因
+
+    public Chromosome conductGA() {
+        double IterationBestScoreSum = 0;
+        long IterTimeSum = 0;
+        Chromosome maxBestGene = null;
+        double maxBestScore = Double.MIN_VALUE;
+
+        double lastBestScore = Double.MIN_VALUE; // 上一代的最佳适应度分数
+        int convergenceCount = 0; // 收敛计数器
+        final int convergenceThreshold = 50; // 收敛阈值，连续50代适应度变化小于1e-5视为收敛
+
+        for (int i = 0; i < TOTAL_ITER_NUM; i++) {
+            long startTime = System.currentTimeMillis();
+            TotalIterNum++;
+            init();
+            for (int j = 0; j < ITER_NUM; j++) {
+                calculatePopScore();
+                print(j + 1);
+                evolve();
+                mutation();
+
+                // 更新收敛判断
+                if (Math.abs(bestScore - lastBestScore) < 1e-5) {
+                    convergenceCount++;
+                    if (convergenceCount >= convergenceThreshold) {
+                        System.out.println("收敛于代数: " + (i * ITER_NUM + j + 1));
+                        maxBestGene = bestGene; // 保存最佳基因
+                        maxBestScore = bestScore; // 保存最佳适应度分数
+                        break; // 提前终止
+                    }
+                } else {
+                    convergenceCount = 0;
+                }
+                lastBestScore = bestScore;
+            }
+            if (maxBestGene != null) break; // 如果已经收敛，终止外部循环
+
+            long endTime = System.currentTimeMillis();
+            System.out.println("==============================");
+            System.out.println("出现负值结果个数为：" + GeneticAlgorithm.underZeroCount);
+            System.out.println("平均每次迭代出现负值的个数为:" + GeneticAlgorithm.underZeroCount / 500);
+            System.out.println("运算耗时为：" + (endTime - startTime) + "ms");
+            long IterTime = endTime - startTime;
+            IterTimeSum += IterTime;
+            Map[] bestWorstDataSet = new Map[2];
+            Map[] totalDataSet = new Map[1];
+            bestWorstDataSet[0] = bestScoreDataMap;
+            bestWorstDataSet[1] = worstScoreDataMap;
+            totalDataSet[0] = totalScoreDataMap;
+            GAGraphUtil.drawBestWorstScoreGraph(bestWorstDataSet);
+            GAGraphUtil.drawTotalScoreGraph(totalDataSet);
+            // 绘图和统计数据的代码部分保留
+        }
+
+        if (maxBestGene != null) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("这次运行平均运算耗时为" + IterTimeSum / TOTAL_ITER_NUM + "ms");
+            System.out.println("算法得到最佳基因的适应度为" + maxBestScore);
+            System.out.println("算法得到最佳基因的频率分布为：" + Arrays.toString(maxBestGene.getFrequencies()));
+            System.out.println("算法得到最佳基因的带宽分布为：" + Arrays.toString(maxBestGene.getBandwidths()));
+        }
+
+        Map[] IterBestScoreDataSet = new Map[1];
+        Map[] IterationAverageValuesSet = new Map[1];
+        IterBestScoreDataSet[0] = IterBestScoreDataMap;
+
+
+
+        //计算每次GA迭代算法平均适应度变化
+        for(int n = 0; n < IterationBestValues.length; n++){
+            IterationBestScoreSum = 0;
+            for (int m = 0; m < IterationBestValues[n].length; m++) {
+                IterationBestScoreSum +=  0.000001 * IterationBestValues[n][m];
+//                System.out.println( "IterationBestScoreSum " + IterationBestScoreSum);
+            }
+            double average =  1000000 * (IterationBestScoreSum / IterationBestValues[n].length);
+//            System.out.println("average" + average);
+            IterationAverageValuesMap.put(n,average);
+        }
+
+        IterationAverageValuesSet[0] = IterationAverageValuesMap;
+
+        GAGraphUtil.drawIterAverBestScoreGraph(IterationAverageValuesSet);
+
+                //绘制总体GA迭代适应度变化轨迹图
+        GAGraphUtil.drawIterBestScoreGraph(IterBestScoreDataSet);
+        GAGraphUtil.blockUtil();
+
+        return bestGene;
+    }
+     */
+
+    /**
      * 临时打印相关信息
      */
     private void print(int generation) {
@@ -211,6 +314,10 @@ public class GeneticAlgorithm   {
             Chromosome chromosome = new Chromosome(numOfPlatforms,f_min,f_max, 
             f_disable_min,f_disable_max,
             b_range_min,b_range_max,b_max);
+            // 强制修正约束
+
+            ConstraintChecker.enforceConstraints(chromosome);
+
             pop.add(chromosome);
         }
     }
@@ -227,6 +334,14 @@ public class GeneticAlgorithm   {
         worstScore = Double.MAX_VALUE;
         bestGene = null;
         worstGene = null;
+
+        // 更新 P_min 和 P_max
+        for (Chromosome chromosome : pop) {
+            double rawPenalty = combinedPenaltyCalculator.calculateRawPenalty(chromosome.getFrequencies(), chromosome.getBandwidths());
+            P_min = Math.min(P_min, rawPenalty);
+            P_max = Math.max(P_max, rawPenalty);
+        }
+
         for (Chromosome chromosome : pop) {
 //            System.out.println(totalScore);
             calculateScore(chromosome);
@@ -264,36 +379,6 @@ public class GeneticAlgorithm   {
 
     }
 
-    // private void calculatePopScore() {
-    //     iterCount++;
-    //     if (pop==null || pop.size()==0) return;
-    //     totalScore=0;
-    //     averageScore=0;
-    //     bestScore=0;
-    //     worstScore=Double.MAX_VALUE;
-    //     bestGene=null;
-    //     worstGene=null;
-    //     for (Chromosome chromosome : pop) {
-    //         calculateScore(chromosome);
-    //         //System.out.println(chromosome);
-    //         totalScore+=chromosome.getScore();
-    //         if (chromosome.getScore()>bestScore) {
-    //             bestScore=chromosome.getScore();
-    //             bestGene= chromosome.getGene();
-    //         }
-    //         if (chromosome.getScore()<worstScore){
-    //             worstScore= chromosome.getScore();
-    //             worstGene= chromosome.getGene();
-    //         }
-    //         averageScore=totalScore/POP_SIZE;
-    //         averageScore=averageScore>bestScore?bestScore:averageScore;
-    //     }
-    //     // 将待绘制的折线图数据信息存入 map 中
-    //     bestScoreDataMap.put((double) iterCount,bestScore);
-    //     worstScoreDataMap.put((double) iterCount,worstScore);
-    //     totalScoreDataMap.put((double) iterCount,totalScore);
-    // }
-
 
     // TODO: 使用强硬的适应度计算策略 <- 1、在初始化种群的时候 2、在父代交叉的时候
     /**
@@ -304,24 +389,31 @@ public class GeneticAlgorithm   {
         ConstraintChecker constraintChecker = new ConstraintChecker();
         
         if (!constraintChecker.isGoodChromosome(chromosome)) {
-            throw new RuntimeException("错误：当前染色体出现错误，无法计算");
+            ConstraintChecker.enforceConstraints(chromosome);
+//            throw new RuntimeException("错误：当前染色体出现错误，无法计算");
         }
 
         double scoreCount = 0d;
 
-                InterferenceCalculator Icalculator = new InterferenceCalculator(chromosome);
-                BandwidthConstraint Bcalculator = new BandwidthConstraint(chromosome);
 
-                double interferences = Icalculator.calculateInterferenceLevel(chromosome.getFrequencies(), chromosome.getBandwidths());
-                double bandwidthPenalty = Bcalculator.calculateBandwidthPenalty(chromosome.getBandwidths());
+        InterferenceCalculator Icalculator = new InterferenceCalculator(chromosome);
+        BandwidthConstraint Bcalculator = new BandwidthConstraint(chromosome);
+
+
+
+         // 使用当前更新的 P_min 和 P_max 进行归一化处理
+         double combinedPenalty = combinedPenaltyCalculator.calculateCombinedPenalty(chromosome.getFrequencies(), chromosome.getBandwidths(), P_min, P_max);
+
+         double interferences = Icalculator.calculateInterferenceLevel(chromosome.getFrequencies(), chromosome.getBandwidths());
+         double bandwidthPenalty = Bcalculator.calculateBandwidthPenalty(chromosome.getBandwidths());
 
 //         System.out.println(1.0 / interferences);
 //         System.out.println(bandwidthPenalty);
 
 
-                
-                // 计算适应度函数 F = w_interference * F_interference + w_bandwidth * F_bandwidth
-                scoreCount = 1.0 / (wInterference * interferences) + 20 * (wBandwidth * bandwidthPenalty);
+
+         // 计算适应度函数 F = w_interference * F_interference + w_bandwidth * F_bandwidth
+         scoreCount = 1.0 / (wInterference * interferences + wBandwidth * (1 - bandwidthPenalty) + wChannel * combinedPenalty);
     
         // 统计出现负值分数的个数
         if (scoreCount < 0) {
@@ -378,6 +470,11 @@ public class GeneticAlgorithm   {
             ConstraintChecker constraintChecker = new ConstraintChecker();
             for (Chromosome child : children) {
                 if (constraintChecker.isGoodChromosome(child)) {
+
+                    newPop.add(child);
+                }else {
+//                    System.out.println("交叉时出现超出约束");
+                    ConstraintChecker.enforceConstraints(child);
                     newPop.add(child);
                 }
             }
@@ -403,7 +500,15 @@ public class GeneticAlgorithm   {
         for (Chromosome chromosome : pop) {
             if (Math.random()<MUTATION_RATE) {
                 Chromosome mutatedChromosome = chromosome.mutation(MAX_MUTATION_NUM,chromosome);
-                mutatedPop.add(mutatedChromosome);
+                ConstraintChecker constraintChecker = new ConstraintChecker();
+                if (constraintChecker.isGoodChromosome(mutatedChromosome)) {
+
+                    mutatedPop.add(mutatedChromosome);
+                }else {
+//                    System.out.println("变异出现越界");
+                    ConstraintChecker.enforceConstraints(mutatedChromosome);  // 强制修正约束
+                    mutatedPop.add(mutatedChromosome);
+                }
             }else {
                 mutatedPop.add(chromosome);
             }

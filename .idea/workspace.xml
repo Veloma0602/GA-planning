@@ -5,56 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e527dc6b-d2d6-4777-baff-6795db71ba2f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/CombinedPenaltyCalculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/BandwidthConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/BandwidthConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/Chromosome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/Chromosome.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ComplexPlanningApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ComplexPlanningApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ConstraintChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/ConstraintChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/GeneticAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/GeneticAlgorithm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/InterferenceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ga_complex_planning/InterferenceCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/RouteCalculator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/planning_info/Info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ga_complex_planning/pojo/Point.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/DrawingTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/DrawingTools.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/GAGraphUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/GAGraphUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/PropertyUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/PropertyUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/YamlUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/YamlUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/YamlUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/YamlUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ga_complex.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ga_complex.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ga_simple.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/planning_info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/planning_info.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ga_complex_planning/ChromosomeTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ga_complex_planning/GeneticAlgorithmTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ga_simple_planning/ChromosomeTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/DrawingToolsTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/RandomDataTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/YamlUtilTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ga_complex.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/BandwidthConstraint.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/BandwidthConstraint.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/Chromosome.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/Chromosome.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/ComplexPlanningApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/ComplexPlanningApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/ConstraintChecker.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/ConstraintChecker.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/GeneticAlgorithm.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/GeneticAlgorithm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/InterferenceCalculator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ga_complex_planning/InterferenceCalculator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/planning_info/Info.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ga_complex_planning/pojo/Point.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ga_simple.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/planning_info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/planning_info.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/DrawingTools.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/DrawingTools.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/GAGraphUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/GAGraphUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/PropertyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/PropertyUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/YamlUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/YamlUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/YamlUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/YamlUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

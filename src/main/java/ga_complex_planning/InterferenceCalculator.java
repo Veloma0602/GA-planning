@@ -16,12 +16,18 @@ public class InterferenceCalculator {
     private double fixedTotalPowerValue; // 用于存储总功率的固定值
     private int[] frequencies; // 用于存储每个移动平台的频率
 
+    private double F_interference_max; // 新增：干扰的最大值
+    private double F_bandwidth_max; // 新增：带宽的最大值
+
     private double total_i = 0.0;
 
     private Properties gaComplexPro = PropertyUtil.getProperty("ga_complex");
     private Properties planningInfoPro = PropertyUtil.getProperty("planning_info");
 
     private int numOfPlatforms = Integer.valueOf(planningInfoPro.getProperty("numOfPlatforms"));
+    private double b_range_min = Double.valueOf(planningInfoPro.getProperty("b_range_min"));       //带宽上下限
+    private double b_range_max = Double.valueOf(planningInfoPro.getProperty("b_range_max"));
+
 
     private double[] noises = new double[numOfPlatforms];
 
@@ -46,6 +52,8 @@ public class InterferenceCalculator {
     public InterferenceCalculator(Chromosome chromosome) {
         this.fixedTotalPowerValue = chromosome.getFixedTotalPowerValue();
         this.frequencies = chromosome.getFrequencies();
+        double f_min = calculateFMin();  // 计算 f_min
+        this.F_interference_max = calculateInterferenceMax(b_range_min,b_range_max, fixedTotalPowerValue, Ki, E, W, alpha, f_min);
     }
 
     // 计算干扰水平函数
@@ -55,11 +63,24 @@ public class InterferenceCalculator {
             double noise = calculateNoise(frequencies[i],bandwidths[i]);
             
             // Store the noise in the frequencies array
+//            System.out.println(noise);
+
             noises[i] = noise;
             total_i += noises[i];
         }
-        return total_i;
+        // 新增：归一化干扰总值
+        double normalizedTotalI = alpha * total_i / F_interference_max;
+        return normalizedTotalI;
+
     }
+
+    //计算最大干扰值
+    public double calculateInterferenceMax(double b_range_min, double b_range_max,double P_total, double Ki, double E, double W, double alpha, double f_min) {
+        double NI_max = (P_total / b_range_min) + (Ki / f_min) * (1 + E + W);  // 计算每个平台的最大噪声
+        double F_interference_max = alpha * NI_max * numOfPlatforms ;  // 计算总干扰的最大值
+        return F_interference_max;
+    }
+
 
     // 计算噪声项
     private double calculateNoise(double frequency,double bandwidth) {
@@ -75,7 +96,8 @@ public class InterferenceCalculator {
     private double calculateWhiteNoise(double bandwidth) {
         // 在这里实现根据频率计算白噪声的逻辑
         // 这里使用 N_{0_i}=\frac{P_{\mathrm{total_i}}}{b_i} 公式
-        return fixedTotalPowerValue / bandwidth;
+
+        return  fixedTotalPowerValue / bandwidth;
     }
 
     // 计算分级噪声
@@ -101,5 +123,13 @@ public class InterferenceCalculator {
         }
         return -1;
     }
+
+    //辅助归一化方法，动态初始化f_min
+
+    private double calculateFMin() {
+        // 返回 fEMI 和 fWind 中的较小值
+        return Math.min(fEMI, fWind);
+    }
+
 
 }
